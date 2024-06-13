@@ -1,0 +1,35 @@
+{
+  "name": "2018hondacivicwallpaperutil",
+  "version": "1.0.0",
+  "description": "Convert images to wallpaper size/format for 2018 Honda Civics.",
+  "main": "js/main.js",
+  "dependencies": {
+    "sharp": "^0.33.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rynstwrt/2018HondaCivicWallpaperUtil.git"
+  },
+  "keywords": [
+    "2018",
+    "Honda",
+    "Civic",
+    "LX",
+    "wallpaper",
+    "util",
+    "convert",
+    "jpg",
+    "bmp",
+    "image"
+  ],
+  "author": "Ryan Stewart",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rynstwrt/2018HondaCivicWallpaperUtil/issues"
+  },
+  "homepage": "https://github.com/rynstwrt/2018HondaCivicWallpaperUtil#readme"
+}
