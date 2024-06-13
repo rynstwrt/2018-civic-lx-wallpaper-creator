@@ -2,11 +2,11 @@
   "name": "2018hondacivicwallpaperutil",
   "version": "1.0.0",
   "description": "Convert images to wallpaper size/format for 2018 Honda Civics.",
-  "main": "js/main.js",
+  "main": "main.js",
   "dependencies": {
+    "jimp": "^0.22.12",
     "sharp": "^0.33.4"
   },
-  "devDependencies": {},
   "scripts": {
     "start": "node ."
   },

@@ -1,7 +1,7 @@
 class ImageFormat
 {
-    static #JPG = 0;
-    static #BMP = 1;
+    static #JPG = ".jpg";
+    static #BMP = ".bmp";
 
     static get JPG () { return this.#JPG }
     static get BMP () { return this.#BMP }
