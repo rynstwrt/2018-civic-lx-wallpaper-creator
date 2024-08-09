@@ -1,0 +1,7 @@
+doctype html
+head
+    include includes/sharedheadtags
+
+body
+    each fileName in fileNames
+        img(src="/assets?fileName=" + fileName)
