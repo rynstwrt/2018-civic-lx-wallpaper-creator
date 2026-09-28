@@ -1,11 +1,11 @@
 from pathlib import Path
-from pickletools import optimize
 from typing import Annotated
 from PIL import Image, ImageOps
 import typer
 from rich import print
 from rich.prompt import Confirm
 from .util import resolve_output_path, WALLPAPER_SIZE, TARGET_EXT
+
 
 
 app = typer.Typer(
@@ -19,22 +19,19 @@ app = typer.Typer(
 
 
 
-
-def make_wallpaper(input_path: Path, output_path: Path):
+def make_wallpaper(input_path: Path, output_file: Path):
     with Image.open(input_path) as img:
         img = img.convert("RGB")
 
         resized_img = ImageOps.fit(img, WALLPAPER_SIZE, centering=(0.5, 0.5))
 
         resized_img.save(
-            output_path,
+            output_file,
             optimize=True,
             quality=100
         )
 
-        # file_size = output_path.stat().st_size
-        # print(f"{(file_size / 1024 / 1024):.2f} MiB")
-        print(f"[bold green]Saved wallpaper to: {output_path}![/bold green]")
+        print(f"[bold green]Saved wallpaper to: {output_file}![/bold green]")
 
 
 
@@ -70,10 +67,8 @@ def main(
     ] = False
 ):
     output_file = resolve_output_path(img_path, output_path)
-    # print(f"Resolved output file to {output_file}")
 
     if output_file.exists() and not confirm_overwrite:
-        # typer.confirm(f'[bold yellow]File "{output_file.relative_to(Path.cwd())}" already exists. Do you want to overwite?', abort=True)
         if not Confirm.ask(f'[bold yellow]File "{output_file.relative_to(Path.cwd())}" already exists. Do you want to overwite?'):
             raise typer.Exit()
 
