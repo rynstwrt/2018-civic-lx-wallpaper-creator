@@ -1,8 +1,0 @@
-doctype html
-head
-    include includes/sharedheadtags
-
-body
-    form#upload-form(action='http://localhost:3099/upload' method='POST' enctype='multipart/form-data')
-        input(type='file' name='image-files' multiple)
-        input(type='submit' value='Upload!')
