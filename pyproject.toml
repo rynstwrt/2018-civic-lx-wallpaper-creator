@@ -1,5 +1,5 @@
 [project]
-name = "2018_civic_wallpaper_util"
+name = "civic_wallpaper"
 version = "0.1.0"
 description = ""
 authors = [
@@ -11,6 +11,10 @@ dependencies = [
     "pillow (>=12.3.0,<13.0.0)",
     "typer (>=0.27.2,<0.28.0)"
 ]
+
+
+[project.scripts]
+makecivicwallpaper = "civic_wallpaper.civic_wallpaper:app"
 
 
 [build-system]
