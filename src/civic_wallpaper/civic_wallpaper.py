@@ -1,13 +1,10 @@
 import time
 from pathlib import Path
 from typing import Annotated
-
-import rich
 from PIL import Image, ImageOps
 import typer
 from rich import print
-from rich.progress import BarColumn, DownloadColumn, Progress, SpinnerColumn, TextColumn
-from rich.prompt import Confirm
+from rich.progress import Progress, SpinnerColumn, TextColumn
 
 
 WALLPAPER_SIZE = (1024, 600)
@@ -28,14 +25,6 @@ def make_wallpaper(input_path: Path, output_path: Path):
         img = img.convert("RGB")
 
         resized_img = ImageOps.fit(img, WALLPAPER_SIZE, centering=(0.5, 0.5))
-
-        if output_path.exists():
-            if not typer.confirm(f"File already exists. Overwite?"):
-                raise typer.Abort()
-            # if not Confirm.ask("File already exists. Overwite?"):
-            #     raise typer.Abort()
-
-            print("CONFIRM!")
 
         resized_img.save(
             output_path,
@@ -82,31 +71,37 @@ def main(
         else:
             raise typer.TyperException("That file path does not exist!")
 
+
+
+    if output_path.exists():
+        typer.confirm(f"File already exists. Overwite?", abort=True)
+
+    print("CONFIRM!")
+
     with Progress(
             SpinnerColumn(),
-            # TextColumn("[progress.description]{task.description}"),
-            # transient=True,jj
+            TextColumn("[progress.description]{task.description}"),
+            # transient=True
     ) as progress:
         progress.add_task(description="Creating image...", total=None)
-        # print("A")
         make_wallpaper(img_path, output_path)
         # time.sleep(2)
 
     print("end")
 
 
-        # with Progress(
-        #         SpinnerColumn(spinner_name="dots"),
-        #         TextColumn("[progress.description]{task.description}"),
-        #         # TextColumn("[bold green]{task.fields}[/bold green]", justify="right"),
-        #         # BarColumn(bar_width=None),
-        #         # "[progress.percentage]{task.percentage:>3.1f}%",
-        # ) as progress:
-        #     task = progress.add_task(description="tasking", start=False)
-        #     # progress.start_task(task, )
-        #     # progress.start()
-        #     progress.update(task, increment=1)
-        #     time.sleep(5)
+    # with Progress(
+    #         SpinnerColumn(spinner_name="dots"),
+    #         TextColumn("[progress.description]{task.description}"),
+    #         # TextColumn("[bold green]{task.fields}[/bold green]", justify="right"),
+    #         # BarColumn(bar_width=None),
+    #         # "[progress.percentage]{task.percentage:>3.1f}%",
+    # ) as progress:
+    #     task = progress.add_task(description="tasking", start=False)
+    #     # progress.start_task(task, )
+    #     # progress.start()
+    #     progress.update(task, increment=1)
+    #     time.sleep(5)
 
     # with Progress(
     #         SpinnerColumn(),
