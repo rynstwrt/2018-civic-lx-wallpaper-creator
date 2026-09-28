@@ -1,0 +1,177 @@
+# from pathlib import Path
+# from pickletools import optimize
+# from typing import Annotated
+# from PIL import Image, ImageOps
+# import typer
+# from rich import print
+# from .util import WALLPAPER_SIZE, BMP_EXT
+# import os
+# import io
+# import imageio.v3 as iio
+# from imageio import imread_v2
+#
+#
+# app = typer.Typer(
+#     no_args_is_help=True,
+#     context_settings={
+#         "help_option_names": ["-h", "--help"]
+#     },
+#     pretty_exceptions_show_locals=True,
+#     suggest_commands=True
+# )
+#
+#
+#
+# # def make_jpeg_then_bmp(input_path, output_path: Path):
+# #     with io.BytesIO() as file_bytes:
+# #         with Image.open(input_path) as img:
+# #             img = img.convert(colors=16)
+# #
+# #             resized_img = ImageOps.fit(img, WALLPAPER_SIZE, centering=(0.5, 0.5))
+# #
+# #             resized_img.save(file_bytes, format="jpeg", quality=60, optimized=True)
+# #
+# #
+# #         img2 = Image.open(file_bytes)
+# #         img2 = img2.convert("RGB")
+# #         img2.save(output_path, optimized=True)
+# #         img2.show()
+# #         # img = Image.open(input_path)
+# #         # print(img)
+# #
+#
+# def make_wallpaper(input_path: Path, output_path: Path):
+#     # make_jpeg_then_bmp(input_path, output_path)
+#     # return
+#
+#     # with Image.open(input_path) as img:
+#     #     img = img.convert("RGB", colors=256)
+#     #     with io.BytesIO() as file_bytes:
+#     #         img.save(file_bytes, format="BMP", quality=10, optimize=True)
+#     #         print(file_bytes.tell())
+#     #         print(img.palette)
+#             # img.save(output_path, format="BMP", quality=10, optimize=True)
+#         # return
+#
+#         # img2 = img.copy()
+#         # img2 = img2.convert("RGB", dither=Image.Dither.FLOYDSTEINBERG, palette=Image.Palette.WEB)
+#         # img2.save(
+#         #     output_path.parent.joinpath("./badquality.bmp").resolve(),
+#         #     optimize=True,
+#         #     quality=10,
+#         # )
+#         #
+#         # print(os.stat(output_path.parent.joinpath("./badquality.bmp").resolve()).st_size)
+#         # # return
+#         #
+#         #
+#         # img = img.convert("L")
+#         # img.save(
+#         #     output_path,
+#         #     optimize=True,
+#         #     quality=10
+#         # )
+#         # print(os.stat(output_path).st_size)
+#         #
+#         # return
+#         #
+#         # # CURRENTLY ALWAYS 1.8MB.
+#     with Image.open(input_path) as img:
+#         img = img.convert("RGB")
+#
+#         # resized_img = ImageOps.fit(img, WALLPAPER_SIZE, centering=(0.5, 0.5))
+#         #
+#         # resized_img.save(
+#         #     output_path,
+#         #     optimize=True
+#         # u)
+#
+#         # resized_img = ImageOps.fit(img, WALLPAPER_SIZE, centering=(0.5, 0.5))
+#
+#         # resized_img.save(
+#         #     output_path.parent.joinpath("./badquality.bmp").resolve(),
+#         #     optimize=True,
+#         #     quality=10
+#         # )
+#
+#         # return
+#
+#         # with io.BytesIO() as file_bytes:
+#         #     img.save(output_path, optimize=True, quality=90, format="jpeg")
+#         #     print(resized_img.tell())
+#         #
+#         #
+#         # with io.BytesIO() as file_bytes:
+#         #     img.save(resized_img, optimize=True, quality=10, format="jpeg")
+#         #     print(resized_img.tell())
+#         # return
+#         # print(img.stat().st_size)
+#
+#
+#
+#         resized_img = ImageOps.fit(img, WALLPAPER_SIZE, centering=(0.5, 0.5))
+#
+#         resized_img.save(
+#             output_path ,
+#             # optimize=True,
+#             # quality=100
+#         )
+#
+#         # 1843254
+#         file_size = output_path.stat().st_size
+#         print(file_size)
+#
+#
+#         print(f"[bold green]Saved wallpaper to: {output_path}![/bold green]")
+#
+#
+#
+# @app.command(
+#     no_args_is_help=True,
+#     help="Convert images to wallpaper size/format for 2018 Honda Civics.",
+# )
+# def main(
+#     img_path: Annotated[
+#         Path,
+#         typer.Argument(
+#             dir_okay=False,
+#             resolve_path=True,
+#             metavar="image",
+#             help="The source image file",
+#         )
+#     ],
+#     output_path: Annotated[
+#         Path,
+#         typer.Option(
+#             "-o", "--output",
+#             resolve_path=True,
+#             show_default=False,
+#             help="The directory or file you want to export the wallpaper to",
+#         )
+#     ] = Path.cwd(),
+#     confirm_overwrite: Annotated[
+#         bool,
+#         typer.Option(
+#             "-y", "--yes", "--confirm",
+#             help="Bypass file overwrite confirmation"
+#         )
+#     ] = False
+# ):
+#     if output_path.exists():
+#         if output_path.is_dir():
+#             output_path = output_path.joinpath(img_path.with_suffix(BMP_EXT).name)
+#     else:
+#         if output_path.parent.is_dir():
+#             output_path = output_path.with_suffix(BMP_EXT)
+#         else:
+#             raise typer.TyperException("That file path does not exist!")
+#
+#     if output_path.exists() and not confirm_overwrite:
+#         typer.confirm(f"File already exists. Overwite?", abort=True)
+#
+#     make_wallpaper(img_path, output_path)
+#
+#
+#
+# if __name__ == "__main__":
+#     app()

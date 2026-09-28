@@ -10,12 +10,13 @@ requires-python = ">=3.11"
 dependencies = [
     "pillow (>=12.3.0,<13.0.0)",
     "typer (>=0.27.2,<0.28.0)",
+    "imageio (>=2.38.0,<3.0.0)",
 ]
 
 
 [project.scripts]
 makecivicwallpaper = "civic_wallpaper.civic_wallpaper:app"
-ryntest = "civic_wallpaper:test"
+ryntest = "civic_wallpaper.civic_wallpaper:test"
 
 
 [build-system]

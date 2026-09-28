@@ -1,14 +1,11 @@
 from pathlib import Path
+from pickletools import optimize
 from typing import Annotated
 from PIL import Image, ImageOps
 import typer
 from rich import print
-
-
-
-WALLPAPER_SIZE = (1024, 600)
-BMP_EXT = ".bmp"
-
+from rich.prompt import Confirm
+from .util import resolve_output_path, WALLPAPER_SIZE, TARGET_EXT
 
 
 app = typer.Typer(
@@ -16,10 +13,10 @@ app = typer.Typer(
     context_settings={
         "help_option_names": ["-h", "--help"]
     },
-    # rich_markup_mode="markdown",
     pretty_exceptions_show_locals=True,
     suggest_commands=True
 )
+
 
 
 
@@ -32,9 +29,11 @@ def make_wallpaper(input_path: Path, output_path: Path):
         resized_img.save(
             output_path,
             optimize=True,
-            quality=90
+            quality=100
         )
 
+        # file_size = output_path.stat().st_size
+        # print(f"{(file_size / 1024 / 1024):.2f} MiB")
         print(f"[bold green]Saved wallpaper to: {output_path}![/bold green]")
 
 
@@ -65,35 +64,21 @@ def main(
     confirm_overwrite: Annotated[
         bool,
         typer.Option(
-            "-y", "--yes", "--confirm",
+            "-y", "--yes", "--confirm", "--overwrite",
             help="Bypass file overwrite confirmation"
-        )
-    ] = False,
-    display_img: Annotated[
-        bool,
-        typer.Option(
-            "-s", "--show",
-            help="Open the wallpaper image after creation"
         )
     ] = False
 ):
-    if output_path.exists():
-        if output_path.is_dir():
-            output_path = output_path.joinpath(img_path.with_suffix(BMP_EXT).name)
-    else:
-        if output_path.parent.is_dir():
-            output_path = output_path.with_suffix(BMP_EXT)
-        else:
-            raise typer.TyperException("That file path does not exist!")
+    output_file = resolve_output_path(img_path, output_path)
+    # print(f"Resolved output file to {output_file}")
 
-    if output_path.exists() and not confirm_overwrite:
-        typer.confirm(f"File already exists. Overwite?", abort=True)
+    if output_file.exists() and not confirm_overwrite:
+        # typer.confirm(f'[bold yellow]File "{output_file.relative_to(Path.cwd())}" already exists. Do you want to overwite?', abort=True)
+        if not Confirm.ask(f'[bold yellow]File "{output_file.relative_to(Path.cwd())}" already exists. Do you want to overwite?'):
+            raise typer.Exit()
 
-    make_wallpaper(img_path, output_path)
+    make_wallpaper(img_path, output_file)
 
-    if display_img:
-        with Image.open(output_path) as img:
-            img.show()
 
 
 if __name__ == "__main__":
