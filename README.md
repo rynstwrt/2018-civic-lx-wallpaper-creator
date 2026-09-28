@@ -1,6 +1,6 @@
 <div align="center">
-<h1>2018 Honda Civic LX Hatchback<br/>Wallpaper Creator</h1>
-<p><strong>A CLI command/Python library to turn images to compatible<br/>wallpapers for the 2018 Honda Civic LX Hatchback!</strong></p>
+<h1 style="color: #FF6600;letter-spacing: 1px; text-transform: uppercase;">2018 Honda Civic LX Hatchback<br/>Wallpaper Creator</h1>
+<h3>A CLI command/Python library to turn images to compatible<br/>wallpapers for the 2018 Honda Civic LX Hatchback!</h3>
 <br/>
 <img src= './.github/assets/hero.png' alt='Picture of a red fox looking at a Minecraft fox and saying "haha, das me"' width="60%" />
 </div>
