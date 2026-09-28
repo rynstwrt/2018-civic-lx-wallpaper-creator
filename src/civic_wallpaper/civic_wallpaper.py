@@ -17,14 +17,9 @@ app = typer.Typer(
 )
 
 
-def make_wallpaper(input_path: Path, output_path: Path = Path.cwd()):
-    if output_path.is_dir():
-        output_path = output_path.joinpath(input_path.with_suffix(".bmp").name)
-    elif output_path.is_file():
-        output_path = output_path.with_suffix(".bmp")
-
+# def make_wallpaper(input_path: Path, output_path: Path = Path.cwd()):
+def make_wallpaper(input_path: Path, output_path: Path):
     with Image.open(input_path) as img:
-        # if img.mode in ("RGBA", "P") and output_path.name.lower().endswith(('.jpg', '.jpeg')):
         img = img.convert("RGB")
 
         resized_img = ImageOps.fit(img, WALLPAPER_SIZE, centering=(0.5, 0.5))
@@ -35,7 +30,7 @@ def make_wallpaper(input_path: Path, output_path: Path = Path.cwd()):
             quality=90
         )
 
-        print(f"Saved wallpaper to: {output_path}!")
+        typer.echo(f"[green][bold]Saved wallpaper to: {output_path}!")
 
 
 @app.command(no_args_is_help=True)
@@ -51,7 +46,7 @@ def main(
             )
         ],
         output_path: Annotated[
-            Path | None,
+            Path,
             typer.Option(
                 "-o", "--output",
                 file_okay=True,
@@ -59,15 +54,53 @@ def main(
                 resolve_path=True,
                 help="The directory or file you want to export the wallpaper to"
             )
-        ] = None
+        ] = Path.cwd()
 ):
+    # input_file_name = input_img.name
+
+    # output_dir = Path.cwd() if not output_path else output_path
+    # print(output_dir)
+
+
+    if not output_path.exists() and len(output_path.suffixes):
+        if output_path.parent.is_dir():
+            output_path = output_path.with_suffix(".bmp")
+        else:
+            raise typer.TyperException("That file path does not exist!")
+
+    # if not output_path.exists() and len(output_path.suffixes):
+    #     if output_path.parent.is_dir():
+    #         output_path = output_path.with_suffix(".bmp")
+    #         # output_path = output_path.parent.joinpath(output_path..with_suffix(".bmp").name)
+    #     else:
+    #         raise typer.TyperException("That file path does not exist!")
+
+    print(output_path)
+
+    if output_path.is_dir():
+        pass # add input file name
+    # elif
+
+    # output_path = output_dir.joinpath(input_img.with_suffix(".bmp").name) if output_dir.is_dir() else output_dir.
+    # output_path = output_dir.joinpath(with_suffix(".bmp")
+    # return
+
+
+
+    # if not output_path:
+    #     output_path = Path.cwd().joinpath(input_img.with_suffix(".bmp").name)
+
     # print(input_img)
+    # print(output_path.exists(), output_path.is_dir())
+    # print(output_path.suffixes)
+
+
     # print(output_path)
-    args = [input_img]
-    if output_path:
-        args.append(output_path)
+
+
+    # print(input_img.with_name("asdf.bmp"))
+
     # make_wallpaper(input_img, output_path)
-    make_wallpaper(*args)
 
 
 if __name__ == "__main__":
