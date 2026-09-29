@@ -1,10 +1,19 @@
 from pathlib import Path
 from typing import Annotated
+
 from PIL import Image, ImageOps
 import typer
 from rich import print
 from rich.prompt import Confirm
-from .util import resolve_output_path, WALLPAPER_SIZE, TARGET_EXT
+from rich.console import Console
+from rich.style import Style
+
+from .util import resolve_output_path, WALLPAPER_SIZE
+
+
+
+success_console = Console(style=Style(color="green", bold=True))
+err_console = Console(stderr=True, style=Style(color="red", bgcolor="black"))
 
 
 
@@ -66,6 +75,11 @@ def main(
         )
     ] = False
 ):
+    success_console.print("success", end="\n")
+    err_console.print("error")
+
+    return
+
     output_file = resolve_output_path(img_path, output_path)
 
     if output_file.exists() and not confirm_overwrite:
