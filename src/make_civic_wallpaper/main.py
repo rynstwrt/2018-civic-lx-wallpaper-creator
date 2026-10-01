@@ -1,20 +1,13 @@
 from pathlib import Path
 from typing import Annotated
-
 from PIL import Image, ImageOps
 import typer
 from rich import print
 from rich.prompt import Confirm
-from rich.console import Console
-from rich.style import Style
-
-from .util import resolve_output_path, WALLPAPER_SIZE
-
-
-
-success_console = Console(style=Style(color="green", bold=True))
-err_console = Console(stderr=True, style=Style(color="red", bgcolor="black"))
-
+from .util import (resolve_output_path,
+                   WALLPAPER_SIZE,
+                   print_success_message,
+                   print_error_message)
 
 
 app = typer.Typer(
@@ -40,7 +33,7 @@ def make_wallpaper(input_path: Path, output_file: Path):
             quality=100
         )
 
-        print(f"[bold green]Saved wallpaper to: {output_file}![/bold green]")
+        print_success_message(f"Saved wallpaper to {output_file}!")
 
 
 
@@ -75,11 +68,6 @@ def main(
         )
     ] = False
 ):
-    success_console.print("success", end="\n")
-    err_console.print("error")
-
-    return
-
     output_file = resolve_output_path(img_path, output_path)
 
     if output_file.exists() and not confirm_overwrite:

@@ -1,9 +1,17 @@
 from pathlib import Path
+from rich import print
 import typer
 
 
 WALLPAPER_SIZE = (1024, 600)
 TARGET_EXT = ".jpg"
+
+
+def print_success_message(msg: str):
+    print(f"\n[bold green]{msg}[/bold green]\n")
+
+def print_error_message(msg: str):
+    print(f"\n[bold red]{msg}[/bold red]\n")
 
 
 def resolve_output_path(img_path: Path, output_path: Path):
