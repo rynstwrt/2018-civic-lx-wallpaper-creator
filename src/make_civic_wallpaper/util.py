@@ -1,4 +1,6 @@
 from pathlib import Path
+from urllib.parse import urlparse
+
 from rich import print
 
 
@@ -11,6 +13,15 @@ def print_success_message(msg: str):
 
 def print_error_message(msg: str):
     print(f"\n[bold red]Error: {msg}[/bold red]\n")
+
+
+
+def is_url(img_path: str):
+    try:
+        result = urlparse(img_path)
+        return all([result.scheme, result.netloc])
+    except ValueError:
+        return False
 
 
 def resolve_output_path(img_path: Path, output_path: Path):
