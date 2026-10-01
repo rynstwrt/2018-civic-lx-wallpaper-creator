@@ -2,7 +2,6 @@ from pathlib import Path
 from typing import Annotated
 from PIL import Image, ImageOps
 import typer
-from rich import print
 from rich.prompt import Confirm
 from .util import (resolve_output_path,
                    WALLPAPER_SIZE,
@@ -69,13 +68,15 @@ def main(
     ] = False
 ):
     output_file = resolve_output_path(img_path, output_path)
+    if not output_file:
+        print_error_message("Invalid output path given! File path does not exist!")
+        raise typer.Exit()
 
     if output_file.exists() and not confirm_overwrite:
         if not Confirm.ask(f'[bold yellow]File "{output_file.relative_to(Path.cwd())}" already exists. Do you want to overwite?'):
             raise typer.Exit()
 
     make_wallpaper(img_path, output_file)
-
 
 
 if __name__ == "__main__":
