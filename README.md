@@ -13,7 +13,7 @@
 ## **Usage**
 [Coming soon]
 
-<br />
+<br/>
 
 ---
 
