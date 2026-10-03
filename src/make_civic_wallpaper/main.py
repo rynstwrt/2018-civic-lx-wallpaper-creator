@@ -4,9 +4,10 @@ from PIL import Image, ImageOps
 import typer
 from rich.prompt import Confirm
 from .util import (parse_img_path,
-                   TARGET_EXT, validate_img_src, validate_output_path, WALLPAPER_SIZE,
-                   print_success_message,
-                   print_error_message)
+                   validate_img_src,
+                   validate_output_path,
+                   WALLPAPER_SIZE,
+                   print_success_message)
 from upath import UPath
 
 
@@ -16,7 +17,6 @@ app = typer.Typer(
     context_settings={
         "help_option_names": ["-h", "--help"]
     },
-    # pretty_exceptions_show_locals=True,
     suggest_commands=True
 )
 

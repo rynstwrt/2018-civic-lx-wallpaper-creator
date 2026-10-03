@@ -59,9 +59,8 @@ def validate_output_path(ctx: typer.Context, output_path: Path):
             return output_path / suffixed_img_src_name
         else:
             return output_path
-    else:
-        if output_path.parent.is_dir():
-            return output_path / output_path.with_suffix(TARGET_EXT)
+    elif output_path.parent.is_dir():
+        return output_path / output_path.with_suffix(TARGET_EXT)
 
     return None
 
