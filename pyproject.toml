@@ -21,8 +21,8 @@ dependencies = [
 
 [project.scripts]
 makecivicwallpaper = "make_civic_wallpaper.main:app"
-ryntest = "make_civic_wallpaper:test"
-ryntest2 = "make_civic_wallpaper.main:make_wallpaper_from_url"
+civicwallpaper = "make_civic_wallpaper.main:app"
+mcw = "make_civic_wallpaper.main:app"
 
 
 [build-system]

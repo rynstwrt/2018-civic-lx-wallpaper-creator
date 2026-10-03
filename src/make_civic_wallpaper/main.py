@@ -3,8 +3,8 @@ from typing import Annotated
 from PIL import Image, ImageOps
 import typer
 from rich.prompt import Confirm
-from .util import (named_function,
-                   TARGET_EXT, WALLPAPER_SIZE,
+from .util import (parse_img_path,
+                   TARGET_EXT, validate_img_src, validate_output_path, WALLPAPER_SIZE,
                    print_success_message,
                    print_error_message)
 from upath import UPath
@@ -16,7 +16,7 @@ app = typer.Typer(
     context_settings={
         "help_option_names": ["-h", "--help"]
     },
-    pretty_exceptions_show_locals=True,
+    # pretty_exceptions_show_locals=True,
     suggest_commands=True
 )
 
@@ -39,12 +39,6 @@ def make_wallpaper(img_src: UPath, output_file: Path):
 
 
 
-@named_function("Path | URL")
-def parse_img_path(path_or_url: str) -> UPath:
-    return UPath(path_or_url)
-
-
-
 @app.command(
     no_args_is_help=True,
     help="Convert images to wallpaper size/format for 2018 Honda Civics LX's."
@@ -56,6 +50,8 @@ def main(
                 metavar="image",
                 help="The source image file path or URL",
                 parser=parse_img_path,
+                callback=validate_img_src,
+                is_eager=True
             )
         ],
         output_path: Annotated[
@@ -63,8 +59,8 @@ def main(
             typer.Option(
                 "-o", "--output",
                 resolve_path=True,
-                # show_default=False,
                 help="The directory or file to as save at/as",
+                callback=validate_output_path
             )
         ] = Path.cwd(),
         confirm_overwrite: Annotated[
@@ -75,29 +71,12 @@ def main(
             )
         ] = False
 ):
-    img_src = img_src.resolve()
-    if not img_src.is_file():
-        print_error_message("Given source image is not a file!")
-        raise typer.Exit()
+    if not output_path:
+        raise typer.BadParameter("Output path is invalid!")
 
-    if output_path.exists():
-        if output_path.is_dir():
-            output_path = output_path / img_src.name
-        elif not confirm_overwrite:
-            if not Confirm.ask(f'[bold yellow]File "{output_path.relative_to(Path.cwd())}" already exists. Do you want to overwite?'):
-                raise typer.Exit()
-    else:
-        is_hypothetical_file = output_path.suffix
-        if is_hypothetical_file:
-            if not output_path.parent.is_dir():
-                print_error_message("Given output file parent directory does not exist!")
-                raise typer.Exit()
-        else:
-            if output_path.parent.is_dir():
-                output_path = output_path.with_suffix(TARGET_EXT)
-            else:
-                print_error_message("Given output file parent directory does not exist!")
-                raise typer.Exit()
+    if output_path.exists() and not confirm_overwrite:
+        if not Confirm.ask(f"{output_path} already exists. Overwrite?"):
+            raise typer.Exit()
 
     make_wallpaper(img_src, output_path)
 
