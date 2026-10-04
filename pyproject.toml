@@ -1,7 +1,7 @@
 [project]
-name = "make_civic_wallpaper"
+name = "make-civic-wallpaper"
 version = "0.1.0"
-description = ""
+description = "A CLI command to create compatible wallpapers for your 2018 Honda Civic LX!"
 authors = [
     { name = "Ryn Stewart", email = "rynstwrt17@gmail.com" }
 ]
